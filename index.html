@@ -74,6 +74,11 @@
     background-image: linear-gradient(var(--gold) 1px, transparent 1px), linear-gradient(90deg, var(--gold) 1px, transparent 1px);
     background-size: 60px 60px;
   }
+
+  #hero-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    z-index: 0; opacity: 0.55; pointer-events: none;
+  }
   .hero-content { position: relative; z-index: 1; max-width: 640px; }
   .hero-badge {
     display: inline-block; background: rgba(200,168,75,0.15); border: 1px solid var(--gold);
@@ -590,6 +595,7 @@
 
 <!-- HERO -->
 <section class="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-grid"></div>
   <div class="hero-content">
     <div class="hero-badge">Degana, Rajasthan</div>
@@ -750,14 +756,14 @@
       <div class="contact-detail">
         <div class="contact-icon">📍</div>
         <div class="contact-detail-text">
-          <h4>Shop 1 — Gacchipura Branch</h4>
+          <h4>Shop 1 — Chanda Roon Branch</h4>
           <p>Near Bal Hanuman Mandir, Chanda Roon, Degana, Rajasthan 341503</p>
         </div>
       </div>
       <div class="contact-detail">
         <div class="contact-icon">📍</div>
         <div class="contact-detail-text">
-          <h4>Shop 2 — Degana Branch</h4>
+          <h4>Shop 2 — Main Branch (Gacchipura)</h4>
           <p>Near UCO Bank, Alatawa Road, Gacchipura, Rajasthan</p>
         </div>
       </div>
@@ -783,7 +789,7 @@
         <span style="font-size:20px;">💬</span> WhatsApp Us
       </a>
       <a href="tel:09828321239" class="call-btn">
-        <span style="font-size:20px;">📞</span> Call: 0987654321
+        <span style="font-size:20px;">📞</span> Call: 098283 21239
       </a>
       <a href="https://maps.google.com/?q=Shree+Balaji+Aluminium+Steel+Glass+Degana" target="_blank" class="maps-link">
         → View on Google Maps
@@ -988,6 +994,192 @@ const statsObserver = new IntersectionObserver((entries) => {
 
 const statsEl = document.querySelector('.hero-stats');
 if (statsEl) statsObserver.observe(statsEl);
+</script>
+
+<script>
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const MAROON = '#6b1a1a';
+  const GOLD = '#c8a07a';
+  const CREAM = '#f5f0ea';
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); });
+
+  // Floating geometric particles — aluminium/steel inspired shapes
+  const SHAPES = ['rect', 'line', 'diamond', 'cross'];
+  const particles = [];
+  const COUNT = 38;
+
+  for (let i = 0; i < COUNT; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 22 + 8,
+      shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
+      color: Math.random() > 0.5 ? GOLD : CREAM,
+      alpha: Math.random() * 0.18 + 0.04,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.008,
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.02 + 0.008,
+    });
+  }
+
+  // Connecting lines between nearby particles
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 140) {
+          ctx.save();
+          ctx.globalAlpha = (1 - dist / 140) * 0.09;
+          ctx.strokeStyle = GOLD;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+  }
+
+  function drawShape(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    const pulse = Math.sin(p.pulse) * 0.18 + 1;
+    const s = p.size * pulse;
+    ctx.globalAlpha = p.alpha * (Math.sin(p.pulse) * 0.3 + 0.85);
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = 0.8;
+    ctx.fillStyle = p.color;
+
+    if (p.shape === 'rect') {
+      ctx.strokeRect(-s / 2, -s / 2, s, s * 0.6);
+    } else if (p.shape === 'line') {
+      ctx.beginPath();
+      ctx.moveTo(-s / 2, 0);
+      ctx.lineTo(s / 2, 0);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-s / 2, s * 0.25);
+      ctx.lineTo(s / 2, s * 0.25);
+      ctx.stroke();
+    } else if (p.shape === 'diamond') {
+      ctx.beginPath();
+      ctx.moveTo(0, -s / 2);
+      ctx.lineTo(s / 3, 0);
+      ctx.lineTo(0, s / 2);
+      ctx.lineTo(-s / 3, 0);
+      ctx.closePath();
+      ctx.stroke();
+    } else if (p.shape === 'cross') {
+      ctx.beginPath();
+      ctx.moveTo(-s / 2, 0); ctx.lineTo(s / 2, 0);
+      ctx.moveTo(0, -s / 2); ctx.lineTo(0, s / 2);
+      ctx.stroke();
+      // small dot center
+      ctx.beginPath();
+      ctx.arc(0, 0, 1.5, 0, Math.PI * 2);
+      ctx.globalAlpha = p.alpha * 0.6;
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Slow horizontal scan line — like a laser level tool
+  let scanY = 0;
+  let scanDir = 1;
+
+  function drawScanLine() {
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    ctx.strokeStyle = GOLD;
+    ctx.lineWidth = 1;
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(0.3, GOLD);
+    grad.addColorStop(0.7, GOLD);
+    grad.addColorStop(1, 'transparent');
+    ctx.strokeStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(0, scanY);
+    ctx.lineTo(canvas.width, scanY);
+    ctx.stroke();
+    ctx.restore();
+    scanY += scanDir * 0.4;
+    if (scanY > canvas.height || scanY < 0) scanDir *= -1;
+  }
+
+  // Corner bracket decorations — industrial feel
+  function drawCornerBrackets() {
+    const margin = 24;
+    const bSize = 20;
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    ctx.strokeStyle = GOLD;
+    ctx.lineWidth = 1.5;
+    // top-left
+    ctx.beginPath(); ctx.moveTo(margin + bSize, margin); ctx.lineTo(margin, margin); ctx.lineTo(margin, margin + bSize); ctx.stroke();
+    // top-right
+    ctx.beginPath(); ctx.moveTo(canvas.width - margin - bSize, margin); ctx.lineTo(canvas.width - margin, margin); ctx.lineTo(canvas.width - margin, margin + bSize); ctx.stroke();
+    // bottom-left
+    ctx.beginPath(); ctx.moveTo(margin + bSize, canvas.height - margin); ctx.lineTo(margin, canvas.height - margin); ctx.lineTo(margin, canvas.height - margin - bSize); ctx.stroke();
+    // bottom-right
+    ctx.beginPath(); ctx.moveTo(canvas.width - margin - bSize, canvas.height - margin); ctx.lineTo(canvas.width - margin, canvas.height - margin); ctx.lineTo(canvas.width - margin, canvas.height - margin - bSize); ctx.stroke();
+    ctx.restore();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawConnections();
+    drawScanLine();
+    drawCornerBrackets();
+
+    particles.forEach(p => {
+      drawShape(p);
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.rotSpeed;
+      p.pulse += p.pulseSpeed;
+      // wrap around
+      if (p.x < -p.size) p.x = canvas.width + p.size;
+      if (p.x > canvas.width + p.size) p.x = -p.size;
+      if (p.y < -p.size) p.y = canvas.height + p.size;
+      if (p.y > canvas.height + p.size) p.y = -p.size;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // Mouse parallax — particles subtly react to cursor
+  canvas.closest('section').addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) / rect.width - 0.5;
+    const my = (e.clientY - rect.top) / rect.height - 0.5;
+    particles.forEach((p, i) => {
+      const factor = (i % 3 === 0) ? 0.6 : (i % 3 === 1) ? 0.3 : 0.15;
+      p.x += mx * factor;
+      p.y += my * factor;
+    });
+  });
+})();
 </script>
 </body>
 </html>
