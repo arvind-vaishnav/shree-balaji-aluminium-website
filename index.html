@@ -201,11 +201,20 @@
   .contact-card p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
   .wa-btn {
     display: flex; align-items: center; gap: 12px;
-    background: #25D366; color: white; padding: 16px 28px;
+    background: #3a0f0f; color: var(--gold); padding: 16px 28px;
     text-decoration: none; font-weight: 500; font-size: 15px;
-    margin-bottom: 16px; transition: opacity 0.2s;
+    margin-bottom: 16px; transition: all 0.3s ease;
+    border: 1px solid rgba(200,160,122,0.3);
+    position: relative; overflow: hidden;
   }
-  .wa-btn:hover { opacity: 0.9; }
+  .wa-btn::after {
+    content:''; position:absolute; inset:0;
+    background: rgba(200,160,122,0.08);
+    transform: translateX(-110%) skewX(-15deg);
+    transition: transform 0.4s ease;
+  }
+  .wa-btn:hover::after { transform: translateX(110%) skewX(-15deg); }
+  .wa-btn:hover { background: #4a1414; border-color: var(--gold); transform: translateY(-2px); }
   .call-btn {
     display: flex; align-items: center; gap: 12px;
     background: var(--gold); color: var(--navy); padding: 16px 28px;
@@ -367,6 +376,195 @@
     #modal-gallery { grid-template-columns: repeat(2, 1fr); padding: 3px 16px 0; }
     #modal-header, #modal-desc, #modal-gallery-label, #modal-features { padding-left: 16px; padding-right: 16px; }
     #modal-quote-btn { margin-left: 16px; margin-right: 16px; }
+  }
+
+  /* ========== SCROLL REVEAL BASE ========== */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.from-left { transform: translateX(-50px); }
+  .reveal.from-right { transform: translateX(50px); }
+  .reveal.scale-in { transform: scale(0.92); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+  .reveal-delay-6 { transition-delay: 0.6s; }
+
+  /* ========== HERO ENTRANCE ========== */
+  .hero-badge { animation: fadeSlideDown 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.1s; }
+  .hero-sub { animation: fadeSlideDown 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.2s; }
+  .hero h1 { animation: fadeSlideUp 0.9s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.3s; }
+  .hero-desc { animation: fadeSlideUp 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.5s; }
+  .hero-actions { animation: fadeSlideUp 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.65s; }
+  .hero-visual { animation: fadeSlideLeft 1s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.4s; }
+  .hero-stats { animation: fadeSlideUp 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.8s; }
+
+  @keyframes fadeSlideDown { from { opacity:0; transform:translateY(-28px); } to { opacity:1; transform:none; } }
+  @keyframes fadeSlideUp   { from { opacity:0; transform:translateY(32px);  } to { opacity:1; transform:none; } }
+  @keyframes fadeSlideLeft { from { opacity:0; transform:translateX(40px);  } to { opacity:0.6; transform:none; } }
+
+  /* ========== HERO GRID DRIFT ========== */
+  .hero-grid { animation: gridDrift 18s linear infinite alternate; }
+  @keyframes gridDrift {
+    from { background-position: 0 0; }
+    to   { background-position: 60px 60px; }
+  }
+
+  /* ========== NAV SLIDE IN ========== */
+  nav { animation: navDrop 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes navDrop { from { transform: translateY(-100%); opacity:0; } to { transform:none; opacity:1; } }
+
+  /* ========== STAT COUNTER PULSE ========== */
+  .stat-num { display: inline-block; }
+  .stat:hover .stat-num { animation: pulse 0.4s ease; }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+
+  /* ========== BUTTON ANIMATIONS ========== */
+  .btn-primary {
+    position: relative; overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  .btn-primary::after {
+    content:''; position:absolute; inset:0;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-110%) skewX(-15deg);
+    transition: transform 0.4s ease;
+  }
+  .btn-primary:hover::after { transform: translateX(110%) skewX(-15deg); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(107,26,26,0.35); }
+  .btn-primary:active { transform: translateY(0px) scale(0.97); }
+
+  .btn-outline {
+    position: relative; overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  .btn-outline:hover { transform: translateY(-3px); letter-spacing: 1px; }
+  .btn-outline:active { transform: scale(0.97); }
+
+  .nav-cta { position: relative; overflow: hidden; }
+  .nav-cta::after {
+    content:''; position:absolute; inset:0;
+    background: rgba(255,255,255,0.2);
+    transform: translateX(-110%) skewX(-15deg);
+    transition: transform 0.35s ease;
+  }
+  .nav-cta:hover::after { transform: translateX(110%) skewX(-15deg); }
+
+  /* ========== PRODUCT CARD ANIMATIONS ========== */
+  .product-card {
+    transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .product-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(107,26,26,0.18);
+  }
+  .product-card:active { transform: scale(0.98); }
+  .product-icon {
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .product-card:hover .product-icon { transform: scale(1.2) rotate(-8deg); }
+
+  /* ========== WHY CARDS ========== */
+  .why-card {
+    transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+    position: relative; overflow: hidden;
+  }
+  .why-card::before {
+    content:''; position:absolute; inset:0;
+    background: rgba(200,160,122,0.04);
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform 0.4s ease;
+  }
+  .why-card:hover::before { transform: scaleY(1); }
+  .why-card:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(0,0,0,0.2); }
+
+  /* ========== ABOUT CARD ROW SLIDE ========== */
+  .about-card-row {
+    transition: all 0.25s ease;
+    border-left: 2px solid transparent;
+  }
+  .about-card-row:hover { border-left-color: var(--gold); padding-left: 12px !important; }
+
+  /* ========== CONTACT ICON SPIN ========== */
+  .contact-detail:hover .contact-icon { animation: iconBounce 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes iconBounce { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2) rotate(8deg);} }
+
+  /* ========== FOOTER LOGO ========== */
+  .footer-divider {
+    transition: width 0.5s ease;
+  }
+  .footer-divider:hover { width: 160px; }
+
+  /* ========== SECTION TAG LINE GROW ========== */
+  .section-tag {
+    position: relative; display: inline-block;
+  }
+  .section-tag::after {
+    content:''; position:absolute; bottom:-3px; left:0;
+    width:0; height:1px; background: var(--gold);
+    transition: width 0.4s ease;
+  }
+  .section-tag:hover::after { width: 100%; }
+
+  /* ========== MODAL ANIMATION ========== */
+  #modal-box { animation: none; }
+  #modal-overlay.open #modal-box {
+    animation: modalSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  @keyframes modalSlideUp {
+    from { opacity:0; transform: translateY(40px) scale(0.97); }
+    to   { opacity:1; transform: none; }
+  }
+  #modal-close {
+    transition: all 0.2s ease;
+  }
+  #modal-close:hover { transform: rotate(90deg) scale(1.1); }
+
+  /* ========== FEATURE DOT BOUNCE ========== */
+  .feature-item:hover .feature-dot {
+    animation: dotBounce 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes dotBounce { 0%,100%{transform:scale(1);} 50%{transform:scale(1.8);} }
+
+  /* ========== HERO CARD FLOAT ========== */
+  .hero-card:nth-child(1) { animation: float 4s ease-in-out infinite; }
+  .hero-card:nth-child(2) { animation: float 4s ease-in-out infinite 0.5s; }
+  .hero-card:nth-child(3) { animation: float 4s ease-in-out infinite 1s; }
+  .hero-card:nth-child(4) { animation: float 4s ease-in-out infinite 1.5s; }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  /* ========== QUOTE BUTTON IN MODAL ========== */
+  #modal-quote-btn {
+    position: relative; overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  #modal-quote-btn::after {
+    content:''; position:absolute; inset:0;
+    background: rgba(200,160,122,0.15);
+    transform: translateX(-110%) skewX(-15deg);
+    transition: transform 0.4s ease;
+  }
+  #modal-quote-btn:hover::after { transform: translateX(110%) skewX(-15deg); }
+  #modal-quote-btn:hover { letter-spacing: 1.5px; }
+
+  /* ========== GALLERY SLOT PULSE ========== */
+  .gallery-slot:hover .gallery-slot-icon {
+    animation: iconBounce 0.45s cubic-bezier(0.34,1.56,0.64,1);
+    opacity: 0.8;
+  }
+
+  /* ========== SCROLL PROGRESS BAR ========== */
+  #scroll-bar {
+    position: fixed; top: 70px; left: 0; height: 2px;
+    background: var(--gold); width: 0%; z-index: 200;
+    transition: width 0.1s linear;
   }
 </style>
 </head>
@@ -552,8 +750,15 @@
       <div class="contact-detail">
         <div class="contact-icon">📍</div>
         <div class="contact-detail-text">
-          <h4>Address</h4>
+          <h4>Shop 1 — Main Branch</h4>
           <p>Near Bal Hanuman Mandir, Chanda Roon, Degana, Rajasthan 341503</p>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div class="contact-detail-text">
+          <h4>Shop 2 — Gacchipura Branch</h4>
+          <p>Near UCO Bank, Alatawa Road, Gacchipura, Rajasthan</p>
         </div>
       </div>
       <div class="contact-detail">
@@ -666,6 +871,123 @@ function closeModal() {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+<div id="scroll-bar"></div>
+<script>
+// Scroll progress bar
+window.addEventListener('scroll', () => {
+  const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('scroll-bar').style.width = scrolled + '%';
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => observer.observe(el));
+
+// Add reveal classes dynamically to sections
+const targets = [
+  { sel: '.about-text', cls: 'reveal from-left' },
+  { sel: '.about-card', cls: 'reveal from-right' },
+  { sel: '.product-card', cls: 'reveal scale-in' },
+  { sel: '.why-card', cls: 'reveal' },
+  { sel: '.contact-info', cls: 'reveal from-left' },
+  { sel: '.contact-card', cls: 'reveal from-right' },
+  { sel: '.products-header', cls: 'reveal' },
+  { sel: '.why-header', cls: 'reveal' },
+  { sel: '.footer-logo', cls: 'reveal' },
+  { sel: '.footer-tagline', cls: 'reveal reveal-delay-1' },
+  { sel: '.footer-divider', cls: 'reveal reveal-delay-2' },
+];
+
+targets.forEach(({ sel, cls }) => {
+  document.querySelectorAll(sel).forEach((el, i) => {
+    cls.split(' ').forEach(c => el.classList.add(c));
+    const delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3','reveal-delay-4','reveal-delay-5','reveal-delay-6'];
+    if (sel === '.product-card' || sel === '.why-card') {
+      el.classList.add(delays[i] || '');
+    }
+    observer.observe(el);
+  });
+});
+
+// Magnetic button effect on primary buttons
+document.querySelectorAll('.btn-primary, .btn-outline, .nav-cta').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    btn.style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+// Tilt effect on product cards
+document.querySelectorAll('.product-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `translateY(-8px) scale(1.02) rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'all 0.5s cubic-bezier(0.22,1,0.36,1)';
+  });
+});
+
+// Why card tilt
+document.querySelectorAll('.why-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `translateY(-8px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// Stat number count-up animation
+function animateCount(el, target, suffix) {
+  let start = 0;
+  const duration = 1200;
+  const step = timestamp => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const nums = e.target.querySelectorAll('.stat-num');
+      nums.forEach(n => {
+        const txt = n.textContent;
+        if (txt.includes('★')) animateCount(n, 5, '★');
+        else if (txt.includes('+')) animateCount(n, parseInt(txt), '+');
+        else if (txt.includes('%')) animateCount(n, parseInt(txt), '%');
+        else animateCount(n, parseInt(txt), '');
+      });
+      statsObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsEl = document.querySelector('.hero-stats');
+if (statsEl) statsObserver.observe(statsEl);
 </script>
 </body>
 </html>
