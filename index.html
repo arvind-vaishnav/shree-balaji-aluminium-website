@@ -613,6 +613,87 @@ margin-top: 40px;
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+ .process {
+  padding: 100px 5%;
+  background: #6b1a1a;
+  color: white;
+  text-align: center;
+}
+
+.process-header {
+  margin-bottom: 50px;
+}
+
+.process-tag {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #c8a07a;
+  text-transform: uppercase;
+}
+
+.process h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  margin-top: 10px;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.process-card {
+  background: rgba(255,255,255,0.05);
+  padding: 30px;
+  text-align: left;
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  transition: 0.3s;
+}
+
+.process-card:hover {
+  transform: translateY(-5px);
+  border-color: #c8a07a;
+}
+
+.step-number {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 40px;
+  opacity: 0.1;
+  font-family: 'Playfair Display', serif;
+}
+
+.process-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.process-card p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* animation */
+.process-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.process-card:nth-child(1) { animation-delay: 0.1s; }
+.process-card:nth-child(2) { animation-delay: 0.2s; }
+.process-card:nth-child(3) { animation-delay: 0.3s; }
+.process-card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
 </head>
 <body>
