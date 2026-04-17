@@ -65,16 +65,20 @@
   .nav-cta:hover { background: var(--gold-light); }
 
   /* HERO */
-  .hero {
-    min-height: 100vh; background: 
-  linear-gradient(rgba(20,10,5,0.5), rgba(20,10,5,0.5)),
-  url("hero.png") center/cover no-repeat;
-    display: flex; align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    padding: 100px 5% 60px;
-    position: relative; overflow: hidden;
-  }
+ .hero {
+  min-height: 100vh;
+  background:
+    linear-gradient(to right, rgba(20,10,5,0.85), rgba(20,10,5,0.3)),
+    url("hero.png") center/cover no-repeat;
+
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+
+  padding: 100px 5%;
+  position: relative;
+  overflow: hidden;
+}
   .hero-grid {
     position: absolute; inset: 0; opacity: 0.04;
     background-image: linear-gradient(var(--gold) 1px, transparent 1px), linear-gradient(90deg, var(--gold) 1px, transparent 1px);
