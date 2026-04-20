@@ -766,6 +766,18 @@ margin-top: 40px;
  html, body {
   overflow-x: hidden;
 }
+ /* DEPTH EFFECT */
+section {
+  position: relative;
+}
+
+section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent);
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
